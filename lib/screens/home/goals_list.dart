@@ -34,7 +34,7 @@ class HomeGoalsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _goalsRepository.all(),
+      stream: _goalsRepository.snapshots(),
       builder: _buildList,
     );
   }
