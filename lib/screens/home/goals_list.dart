@@ -1,18 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
+import 'package:dante/repositories/goal.dart';
 import 'package:dante/screens/home/goal_card.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeGoalsList extends StatelessWidget {
-  final _goalsCollection = Firestore.instance.collection("okrs");
+  final _goalsRepository = GoalRepository();
 
   HomeGoalsList({
     Key key,
   }) : super(key: key);
 
   _buildItem(documents) => (context, index) {
-        final document = documents[index];
-        final goal = Goal.of(document);
+        Goal goal = documents[index];
 
         return HomeGoalCard.of(goal);
       };
@@ -25,8 +25,8 @@ class HomeGoalsList extends StatelessWidget {
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        _buildItem(snapshot.data.documents),
-        childCount: snapshot.data.documents.length,
+        _buildItem(snapshot.data),
+        childCount: snapshot.data.length,
       ),
     );
   }
@@ -34,7 +34,7 @@ class HomeGoalsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _goalsCollection.snapshots(),
+      stream: _goalsRepository.all(),
       builder: _buildList,
     );
   }

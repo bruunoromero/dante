@@ -16,6 +16,8 @@ dependencies:
   flutter:
     sdk: flutter
   validate: ^1.7.0
+  reflectable: any
+  build_runner: any
   cloud_firestore: ^0.8.2+3
   cupertino_icons: ^0.1.2
 
