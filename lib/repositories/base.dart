@@ -41,7 +41,10 @@ Map<String, dynamic> _unmap<T extends BaseModel>(T mapped) {
   final variables = _variablesOf(classMirror);
 
   variables.forEach((variable) {
-    map[variable.simpleName] = instanceMirror.invokeGetter(variable.simpleName);
+    if (variable.simpleName != "id") {
+      map[variable.simpleName] =
+          instanceMirror.invokeGetter(variable.simpleName);
+    }
   });
 
   return map;
