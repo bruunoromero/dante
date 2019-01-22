@@ -107,7 +107,7 @@ class DocumentRepository<T extends BaseModel> {
   Future<void> update(Function updater) {
     return Firestore.instance.runTransaction((tx) async {
       final snapshot = await tx.get(_document);
-      final model = _map(snapshot);
+      final model = _map(snapshot) as T;
       final newModel = updater(model) as T;
       final data = _unmap(newModel);
       tx.update(snapshot.reference, data);

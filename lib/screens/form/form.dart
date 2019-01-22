@@ -11,7 +11,8 @@ class GoalForm extends StatefulWidget {
 
   @override
   GoalFormState createState() {
-    return GoalFormState(goal: goal);
+    final _goal = goal == null ? Goal() : goal;
+    return GoalFormState(goal: _goal);
   }
 }
 
@@ -25,9 +26,6 @@ class GoalFormState extends State<GoalForm> {
   TextEditingController _howToMesureController;
 
   GoalFormState({this.goal}) : super() {
-    if (this.goal == null) {
-      this.goal = Goal();
-    }
     _formKey = GlobalKey<FormState>();
     _goalRepository = GoalRepository();
     _dateController = TextEditingController(text: goal.date);
