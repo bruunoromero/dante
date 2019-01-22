@@ -1,62 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dante/models/goal.dart';
 import 'package:flutter/material.dart';
+import 'package:dante/models/goal.dart';
 import 'package:validate/validate.dart';
+import 'package:dante/repositories/goal.dart';
 import 'package:dante/screens/form/field_container.dart';
 
 class GoalForm extends StatefulWidget {
-  final String id;
-  final String date;
-  final String title;
-  final String aspect;
-  final String howToMesure;
+  final Goal goal;
 
-  const GoalForm({
-    this.id,
-    this.date,
-    this.title,
-    this.aspect,
-    this.howToMesure,
-  }) : super();
+  const GoalForm({this.goal}) : super();
 
   @override
   GoalFormState createState() {
-    return GoalFormState();
-  }
-
-  static GoalForm of(Goal goal) {
-    return GoalForm(
-      id: goal.id,
-      date: goal.date,
-      title: goal.title,
-      aspect: goal.aspect,
-      howToMesure: goal.howToMesure,
-    );
+    return GoalFormState(goal: goal);
   }
 }
 
 class GoalFormState extends State<GoalForm> {
-  final String goalId;
-  Map<String, dynamic> _data;
+  Goal goal;
+  GoalRepository _goalRepository;
   GlobalKey<FormState> _formKey;
   TextEditingController _dateController;
   TextEditingController _goalController;
   TextEditingController _aspectController;
   TextEditingController _howToMesureController;
 
-  GoalFormState({
-    this.goalId,
-    String date,
-    String title,
-    String aspect,
-    String howToMesure,
-  }) : super() {
-    _data = Map<String, dynamic>();
+  GoalFormState({this.goal}) : super() {
+    if (this.goal == null) {
+      this.goal = Goal();
+    }
     _formKey = GlobalKey<FormState>();
-    _dateController = TextEditingController(text: date);
-    _goalController = TextEditingController(text: title);
-    _aspectController = TextEditingController(text: title);
-    _howToMesureController = TextEditingController(text: howToMesure);
+    _goalRepository = GoalRepository();
+    _dateController = TextEditingController(text: goal.date);
+    _goalController = TextEditingController(text: goal.title);
+    _aspectController = TextEditingController(text: goal.title);
+    _howToMesureController = TextEditingController(text: goal.howToMesure);
   }
 
   dynamic _validatePresence(String message) => (String str) {
@@ -81,7 +58,7 @@ class GoalFormState extends State<GoalForm> {
             FormFieldContainer(
               child: TextFormField(
                 onSaved: (str) {
-                  _data['title'] = str;
+                  goal.title = str;
                 },
                 controller: _goalController,
                 validator: _validatePresence("Você deve preencer sua meta"),
@@ -94,7 +71,7 @@ class GoalFormState extends State<GoalForm> {
             FormFieldContainer(
               child: TextFormField(
                 onSaved: (str) {
-                  _data['howToMesure'] = str;
+                  goal.howToMesure = str;
                 },
                 controller: _howToMesureController,
                 validator: _validatePresence(
@@ -124,7 +101,7 @@ class GoalFormState extends State<GoalForm> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     onSaved: (str) {
-                      _data['date'] = str;
+                      goal.date = str;
                     },
                     controller: _dateController,
                     validator: _validatePresence(
@@ -166,7 +143,7 @@ class GoalFormState extends State<GoalForm> {
                 child: AbsorbPointer(
                   child: TextFormField(
                     onSaved: (str) {
-                      _data['aspect'] = str;
+                      goal.aspect = str;
                     },
                     validator: _validatePresence(
                         "Você deve preencer qual aspector da sua meta"),
@@ -186,7 +163,7 @@ class GoalFormState extends State<GoalForm> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        await Firestore.instance.collection('okrs').add(_data);
+                        await _goalRepository.create(goal);
 
                         Navigator.pop(context);
                       }

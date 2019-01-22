@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:dante/models/model.dart';
 
 @model
-class Goal extends BaseModel{
+class Goal extends BaseModel {
   String id;
   String date;
   String title;
@@ -11,9 +11,9 @@ class Goal extends BaseModel{
 
   Goal({
     this.id,
-    @required this.date,
-    @required this.title,
-    @required this.aspect,
-    @required this.howToMesure,
+    this.date = "",
+    this.title = "",
+    this.aspect = "",
+    this.howToMesure = "",
   });
 }
