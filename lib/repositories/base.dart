@@ -101,7 +101,7 @@ class DocumentRepository<T extends BaseModel> {
     return _map(data);
   }
 
-  Future<void> save(T model) {
+  Future<void> update(T model) {
     final data = _unmap(model);
     return _document.updateData(data);
   }
@@ -120,7 +120,7 @@ class BaseRepository<T extends BaseModel> extends Query<T> {
 
   Future<void> save(T model) {
     final docRepo = DocumentRepository._(_collection.document("${model.id}"));
-    return docRepo.save(model);
+    return docRepo.update(model);
   }
 
   Future<DocumentRepository> create(T model) async {
