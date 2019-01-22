@@ -101,9 +101,14 @@ class DocumentRepository<T extends BaseModel> {
     return _map(data);
   }
 
-  Future<void> update(T model) {
-    final data = _unmap(model);
-    return _document.updateData(data);
+  Future<void> update(Function updater) {
+    return Firestore.instance.runTransaction((tx) async {
+      final snapshot = await tx.get(_document);
+      final model = _map(snapshot);
+      final newModel = updater(model) as T;
+      final data = _unmap(newModel);
+      tx.update(snapshot.reference, data);
+    });
   }
 }
 
@@ -116,11 +121,6 @@ class BaseRepository<T extends BaseModel> extends Query<T> {
   DocumentRepository<G> findByPk<G extends BaseModel>(String path) {
     final document = _collection.document(path);
     return DocumentRepository<G>._(document);
-  }
-
-  Future<void> save(T model) {
-    final docRepo = DocumentRepository._(_collection.document("${model.id}"));
-    return docRepo.update(model);
   }
 
   Future<DocumentRepository> create(T model) async {
