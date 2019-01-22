@@ -1,7 +1,11 @@
 import 'package:dante/models/model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-@model
-class Goal {
+part 'goal.g.dart';
+
+@Model()
+@JsonSerializable()
+class Goal extends BaseModel {
   @PrimaryKey()
   String id;
   String date;
@@ -16,4 +20,7 @@ class Goal {
     this.aspect = "",
     this.howToMesure = "",
   });
+
+  factory Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);
+  Map<String, dynamic> toJson() => _$GoalToJson(this);
 }

@@ -1,7 +1,7 @@
 import 'package:reflectable/reflectable.dart';
 
-class Reflector extends Reflectable {
-  const Reflector()
+class Model extends Reflectable {
+  const Model()
       : super(
           invokingCapability,
           metadataCapability,
@@ -11,8 +11,12 @@ class Reflector extends Reflectable {
         );
 }
 
-const model = Reflector();
-
 class PrimaryKey {
   const PrimaryKey();
+}
+
+const model = Model();
+
+abstract class BaseModel {
+  Map<String, dynamic> toJson();
 }

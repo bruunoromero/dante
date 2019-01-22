@@ -2,9 +2,9 @@ import 'package:dante/models/model.dart';
 import 'package:reflectable/reflectable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<X> _filteredDeclarationsOf<X extends DeclarationMirror>(
+List<T> _filteredDeclarationsOf<T extends DeclarationMirror>(
     ClassMirror cm, predicate) {
-  var result = <X>[];
+  var result = <T>[];
   cm.declarations.forEach((k, v) {
     if (predicate(v)) {
       result.add(v);
@@ -21,41 +21,33 @@ List<VariableMirror> _variablesOf(ClassMirror cm) {
   return _filteredDeclarationsOf(cm, (v) => v is VariableMirror);
 }
 
-T _map<T>(DocumentSnapshot document) {
+T _map<T extends BaseModel>(DocumentSnapshot document) {
   ClassMirror classMirror = model.reflectType(T);
-  final variables = _variablesOf(classMirror);
-  Map<Symbol, dynamic> namedArguments = Map();
-
-  variables.forEach((key) {
-    namedArguments[Symbol(key.simpleName)] = document.data[key.simpleName];
-  });
+  final namedArguments = document.data;
 
   classMirror.declarations.forEach((s, decl) {
     decl.metadata.where((m) => m is PrimaryKey).forEach((m) {
-      namedArguments[Symbol(decl.simpleName)] = document.documentID;
+      namedArguments[decl.simpleName] = document.documentID;
     });
   });
 
-  return classMirror.newInstance("", [], namedArguments) as T;
+  return classMirror.newInstance("fromJson", [namedArguments]) as T;
 }
 
-Map<String, dynamic> _unmap<T>(T mapped) {
-  final map = new Map<String, dynamic>();
+Map<String, dynamic> _unmap<T extends BaseModel>(T mapped) {
+  final data = mapped.toJson();
   ClassMirror classMirror = model.reflectType(T);
-  InstanceMirror instanceMirror = model.reflect(mapped);
-  final variables = _variablesOf(classMirror);
 
-  variables.forEach((variable) {
-    if (variable.simpleName != "id") {
-      map[variable.simpleName] =
-          instanceMirror.invokeGetter(variable.simpleName);
-    }
+  classMirror.declarations.forEach((s, decl) {
+    decl.metadata.where((m) => m is PrimaryKey).forEach((m) {
+      data.remove(decl.simpleName);
+    });
   });
 
-  return map;
+  return data;
 }
 
-class Query<T> {
+class Query<T extends BaseModel> {
   final CollectionReference _collection;
 
   Query._(this._collection);
@@ -95,12 +87,12 @@ class Query<T> {
   }
 }
 
-class DocumentRepository<T> {
+class DocumentRepository<T extends BaseModel> {
   final DocumentReference _document;
 
   DocumentRepository._(this._document);
 
-  BaseRepository<G> collection<G>(String path) {
+  BaseRepository<G> collection<G extends BaseModel>(String path) {
     return BaseRepository<G>._(_document.collection(path));
   }
 
@@ -120,13 +112,13 @@ class DocumentRepository<T> {
   }
 }
 
-class BaseRepository<T> extends Query<T> {
+class BaseRepository<T extends BaseModel> extends Query<T> {
   BaseRepository(String collectionPath)
       : super._(Firestore.instance.collection(collectionPath));
 
   BaseRepository._(CollectionReference collection) : super._(collection);
 
-  DocumentRepository<G> findByPk<G>(String path) {
+  DocumentRepository<G> findByPk<G extends BaseModel>(String path) {
     final document = _collection.document(path);
     return DocumentRepository<G>._(document);
   }
