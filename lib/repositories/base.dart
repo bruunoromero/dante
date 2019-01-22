@@ -21,20 +21,25 @@ List<VariableMirror> _variablesOf(ClassMirror cm) {
   return _filteredDeclarationsOf(cm, (v) => v is VariableMirror);
 }
 
-T _map<T extends BaseModel>(DocumentSnapshot document) {
+T _map<T>(DocumentSnapshot document) {
   ClassMirror classMirror = model.reflectType(T);
+  final variables = _variablesOf(classMirror);
   Map<Symbol, dynamic> namedArguments = Map();
 
-  document.data.keys.forEach((key) {
-    namedArguments[Symbol(key)] = document.data[key];
+  variables.forEach((key) {
+    namedArguments[Symbol(key.simpleName)] = document.data[key.simpleName];
   });
 
-  namedArguments[#id] = document.documentID;
+  classMirror.declarations.forEach((s, decl) {
+    decl.metadata.where((m) => m is PrimaryKey).forEach((m) {
+      namedArguments[Symbol(decl.simpleName)] = document.documentID;
+    });
+  });
 
   return classMirror.newInstance("", [], namedArguments) as T;
 }
 
-Map<String, dynamic> _unmap<T extends BaseModel>(T mapped) {
+Map<String, dynamic> _unmap<T>(T mapped) {
   final map = new Map<String, dynamic>();
   ClassMirror classMirror = model.reflectType(T);
   InstanceMirror instanceMirror = model.reflect(mapped);
@@ -50,7 +55,7 @@ Map<String, dynamic> _unmap<T extends BaseModel>(T mapped) {
   return map;
 }
 
-class Query<T extends BaseModel> {
+class Query<T> {
   final CollectionReference _collection;
 
   Query._(this._collection);
@@ -90,12 +95,12 @@ class Query<T extends BaseModel> {
   }
 }
 
-class DocumentRepository<T extends BaseModel> {
+class DocumentRepository<T> {
   final DocumentReference _document;
 
   DocumentRepository._(this._document);
 
-  BaseRepository<G> collection<G extends BaseModel>(String path) {
+  BaseRepository<G> collection<G>(String path) {
     return BaseRepository<G>._(_document.collection(path));
   }
 
@@ -115,13 +120,13 @@ class DocumentRepository<T extends BaseModel> {
   }
 }
 
-class BaseRepository<T extends BaseModel> extends Query<T> {
+class BaseRepository<T> extends Query<T> {
   BaseRepository(String collectionPath)
       : super._(Firestore.instance.collection(collectionPath));
 
   BaseRepository._(CollectionReference collection) : super._(collection);
 
-  DocumentRepository<G> findByPk<G extends BaseModel>(String path) {
+  DocumentRepository<G> findByPk<G>(String path) {
     final document = _collection.document(path);
     return DocumentRepository<G>._(document);
   }

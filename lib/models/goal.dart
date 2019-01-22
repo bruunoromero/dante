@@ -1,8 +1,8 @@
-import 'package:meta/meta.dart';
 import 'package:dante/models/model.dart';
 
 @model
-class Goal extends BaseModel {
+class Goal {
+  @PrimaryKey()
   String id;
   String date;
   String title;

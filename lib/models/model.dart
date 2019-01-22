@@ -4,6 +4,7 @@ class Reflector extends Reflectable {
   const Reflector()
       : super(
           invokingCapability,
+          metadataCapability,
           newInstanceCapability,
           declarationsCapability,
           instanceInvokeCapability,
@@ -12,6 +13,6 @@ class Reflector extends Reflectable {
 
 const model = Reflector();
 
-class BaseModel {
-  String id;
+class PrimaryKey {
+  const PrimaryKey();
 }
