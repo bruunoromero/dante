@@ -123,6 +123,11 @@ class BaseRepository<T extends BaseModel> extends Query<T> {
     return DocumentRepository<G>._(document);
   }
 
+  Future<void> update(String id, Function updater) {
+    final docRepo = DocumentRepository._(_collection.document("$id"));
+    return docRepo.update(updater);
+  }
+
   Future<DocumentRepository> create(T model) async {
     final document = await _collection.add(_unmap(model));
     return DocumentRepository._(document);
