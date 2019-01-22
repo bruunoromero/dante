@@ -2,8 +2,16 @@ import 'package:reflectable/reflectable.dart';
 
 class Reflector extends Reflectable {
   const Reflector()
-      : super(instanceInvokeCapability, newInstanceCapability,
-            declarationsCapability);
+      : super(
+          invokingCapability,
+          newInstanceCapability,
+          declarationsCapability,
+          instanceInvokeCapability,
+        );
 }
 
 const model = Reflector();
+
+class BaseModel {
+  String id;
+}

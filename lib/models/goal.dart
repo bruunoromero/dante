@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:dante/models/model.dart';
 
 @model
-class Goal {
+class Goal extends BaseModel{
   String id;
   String date;
   String title;
