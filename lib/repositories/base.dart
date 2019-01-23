@@ -112,7 +112,7 @@ class DocumentRepository<T extends BaseModel> {
       final model = _map(snapshot) as T;
       final newModel = updater(model) as T;
       final data = _unmap(newModel);
-      tx.update(snapshot.reference, data);
+      await tx.update(snapshot.reference, data);
     });
   }
 }
