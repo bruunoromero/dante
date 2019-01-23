@@ -11,17 +11,13 @@ class EditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DanteScaffold(
-      appBar: DanteAppBar(
-        title: Text("Edit OKR"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create OKR"),
       ),
-      body: [
-        SliverToBoxAdapter(
-          child: GoalForm(
-            goal: this.goal,
-          ),
-        ),
-      ],
+      body: GoalForm(
+        goal: goal,
+      ),
     );
   }
 }

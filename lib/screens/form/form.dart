@@ -18,6 +18,7 @@ class GoalForm extends StatefulWidget {
 
 class GoalFormState extends State<GoalForm> {
   Goal goal;
+  PageController _pageController;
   GoalRepository _goalRepository;
   GlobalKey<FormState> _formKey;
   TextEditingController _dateController;
@@ -28,6 +29,7 @@ class GoalFormState extends State<GoalForm> {
   GoalFormState({this.goal}) : super() {
     _formKey = GlobalKey<FormState>();
     _goalRepository = GoalRepository();
+    _pageController = PageController();
     _dateController = TextEditingController(text: goal.date);
     _goalController = TextEditingController(text: goal.title);
     _aspectController = TextEditingController(text: goal.title);
@@ -50,10 +52,12 @@ class GoalFormState extends State<GoalForm> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Form(
         key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: PageView(
+          controller: _pageController,
+          scrollDirection: Axis.vertical,
           children: [
             FormFieldContainer(
+              title: "hey",
               child: TextFormField(
                 onSaved: (str) {
                   goal.title = str;
@@ -67,6 +71,7 @@ class GoalFormState extends State<GoalForm> {
               ),
             ),
             FormFieldContainer(
+              title: "hey",
               child: TextFormField(
                 onSaved: (str) {
                   goal.howToMesure = str;
@@ -81,6 +86,7 @@ class GoalFormState extends State<GoalForm> {
               ),
             ),
             FormFieldContainer(
+              title: "hey",
               child: InkWell(
                 onTap: () async {
                   final date = await showDatePicker(
@@ -113,6 +119,7 @@ class GoalFormState extends State<GoalForm> {
               ),
             ),
             FormFieldContainer(
+              title: "hey",
               child: InkWell(
                 onTap: () async {
                   showModalBottomSheet(

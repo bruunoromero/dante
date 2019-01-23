@@ -6,15 +6,11 @@ import 'package:dante/screens/form/form.dart';
 class CreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DanteScaffold(
-      appBar: DanteAppBar(
+    return Scaffold(
+      appBar: AppBar(
         title: Text("Create OKR"),
       ),
-      body: [
-        SliverToBoxAdapter(
-          child: GoalForm(),
-        ),
-      ],
+      body: GoalForm(),
     );
   }
 }
