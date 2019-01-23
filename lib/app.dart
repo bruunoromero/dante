@@ -1,4 +1,4 @@
-import 'package:dante/routes.dart';
+import 'package:dante/screens/home.dart';
 import 'package:flutter/material.dart';
 
 class Dante extends StatelessWidget {
@@ -10,8 +10,7 @@ class Dante extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: "/",
-      onGenerateRoute: onGenerateRoute,
+      home: HomeScreen(),
     );
   }
 }

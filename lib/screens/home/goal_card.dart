@@ -1,17 +1,13 @@
+import 'package:dante/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
 import 'package:dante/widgets/card.dart';
+import 'package:dante/screens/edit.dart';
 
 class HomeGoalCard extends StatelessWidget {
-  final String title;
+  final Goal goal;
 
-  const HomeGoalCard({this.title}) : super();
-
-  static HomeGoalCard of(Goal goal) {
-    return HomeGoalCard(
-      title: goal.title,
-    );
-  }
+  const HomeGoalCard({@required this.goal}) : super();
 
   Widget buildCard() {
     return ListTile(
@@ -59,12 +55,14 @@ class HomeGoalCard extends StatelessWidget {
     );
   }
 
-  Text buildTitle() => Text(title);
+  Text buildTitle() => Text(goal.title);
 
   @override
   Widget build(BuildContext context) {
     return DanteCard(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context, editScreenRoute(goal: goal));
+      },
       child: Container(
         padding: EdgeInsets.all(8),
         child: buildCard(),

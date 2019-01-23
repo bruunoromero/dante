@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
 import 'package:dante/repositories/goal.dart';
@@ -14,7 +13,7 @@ class HomeGoalsList extends StatelessWidget {
   _buildItem(documents) => (context, index) {
         Goal goal = documents[index];
 
-        return HomeGoalCard.of(goal);
+        return HomeGoalCard(goal: goal);
       };
 
   Widget _buildList(BuildContext context, AsyncSnapshot snapshot) {

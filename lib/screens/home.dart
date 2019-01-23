@@ -1,3 +1,4 @@
+import 'package:dante/routes.dart';
 import 'package:dante/screens/home/goals_list.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/widgets/app_bar.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends StatelessWidget {
       body: [HomeGoalsList()],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, "/modals/create");
+          Navigator.push(context, createScreenRoute());
         },
         child: Icon(Icons.add),
       ),

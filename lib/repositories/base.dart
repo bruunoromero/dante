@@ -101,7 +101,12 @@ class DocumentRepository<T extends BaseModel> {
     return _map(data);
   }
 
-  Future<void> update(Function updater) {
+  Future<void> update(T model) {
+    final data = model.toJson();
+    return _document.updateData(data);
+  }
+
+  Future<void> updateInTransaction(Function updater) {
     return Firestore.instance.runTransaction((tx) async {
       final snapshot = await tx.get(_document);
       final model = _map(snapshot) as T;
@@ -123,9 +128,13 @@ class BaseRepository<T extends BaseModel> extends Query<T> {
     return DocumentRepository<G>._(document);
   }
 
-  Future<void> update(String id, Function updater) {
+  Future<void> update(String id, T model) {
+    return DocumentRepository._(_collection.document("$id")).update(model);
+  }
+
+  Future<void> updateInTransaction(String id, Function updater) {
     final docRepo = DocumentRepository._(_collection.document("$id"));
-    return docRepo.update(updater);
+    return docRepo.updateInTransaction(updater);
   }
 
   Future<DocumentRepository> create(T model) async {
