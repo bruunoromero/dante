@@ -123,7 +123,7 @@ class BaseRepository<T extends BaseModel> extends Query<T> {
 
   BaseRepository._(CollectionReference collection) : super._(collection);
 
-  DocumentRepository<G> findByPk<G extends BaseModel>(String path) {
+  DocumentRepository<G> document<G extends BaseModel>(String path) {
     final document = _collection.document(path);
     return DocumentRepository<G>._(document);
   }
