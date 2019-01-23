@@ -102,7 +102,7 @@ class DocumentRepository<T extends BaseModel> {
   }
 
   Future<void> update(T model) {
-    final data = model.toJson();
+    final data = _unmap(model);
     return _document.updateData(data);
   }
 
