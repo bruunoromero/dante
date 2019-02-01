@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart';
 
-class DanteCard extends StatefulWidget {
+class DanteCard extends StatelessWidget {
   final Widget child;
   final double elevation;
   final EdgeInsets margin;
@@ -18,39 +18,19 @@ class DanteCard extends StatefulWidget {
     this.borderRadius = 6,
   });
 
-  @override
-  DanteCardState createState() {
-    return new DanteCardState();
-  }
-}
-
-class DanteCardState extends State<DanteCard> {
-  double _scale = 1.0;
-
   Widget _buildChild() {
-    return GestureDetector(
-      onTap: widget.onTap,
-      onTapCancel: () {
-        setState(() {
-          _scale = 1.0;
-        });
-      },
-      onTapDown: (tap) {
-        setState(() {
-          _scale = 0.75;
-        });
-      },
+    return InkWell(
+      onTap: onTap,
+      child: child,
     );
   }
 
-  Widget buildContainer() {
-    return AnimatedContainer(
-      duration: Duration(),
-      transform: Matrix4.translation(Vector3.all(_scale)),
+  Widget _buildContainer() {
+    return Container(
       child: Container(
         decoration: BoxDecoration(
-          gradient: widget.gradient,
-          borderRadius: BorderRadius.circular(widget.borderRadius),
+          gradient: gradient,
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: _buildChild(),
       ),
@@ -60,12 +40,12 @@ class DanteCardState extends State<DanteCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: widget.margin,
-      elevation: widget.elevation,
+      margin: margin,
+      elevation: elevation,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(widget.borderRadius),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
-      child: buildContainer(),
+      child: _buildContainer(),
     );
   }
 }

@@ -2,25 +2,6 @@ import 'package:dante/models/model.dart';
 import 'package:reflectable/reflectable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<T> _filteredDeclarationsOf<T extends DeclarationMirror>(
-    ClassMirror cm, predicate) {
-  var result = <T>[];
-  cm.declarations.forEach((k, v) {
-    if (predicate(v)) {
-      result.add(v);
-    }
-  });
-  return result;
-}
-
-List<MethodMirror> _gettersOf(ClassMirror cm) {
-  return _filteredDeclarationsOf(cm, (v) => v is MethodMirror && v.isGetter);
-}
-
-List<VariableMirror> _variablesOf(ClassMirror cm) {
-  return _filteredDeclarationsOf(cm, (v) => v is VariableMirror);
-}
-
 T _map<T extends BaseModel>(DocumentSnapshot document) {
   ClassMirror classMirror = model.reflectType(T);
   final namedArguments = document.data;

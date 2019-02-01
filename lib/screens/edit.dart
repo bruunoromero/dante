@@ -1,8 +1,6 @@
-import 'package:dante/models/goal.dart';
 import 'package:flutter/material.dart';
-import 'package:dante/widgets/app_bar.dart';
-import 'package:dante/widgets/scaffold.dart';
-import 'package:dante/screens/form/form.dart';
+import 'package:dante/models/goal.dart';
+import 'package:dante/screens/create/form.dart';
 
 class EditScreen extends StatelessWidget {
   final Goal goal;
@@ -15,7 +13,7 @@ class EditScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Create OKR"),
       ),
-      body: GoalForm(
+      body: CreateGoalForm(
         goal: goal,
       ),
     );

@@ -11,8 +11,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DanteScaffold(
-      appBar: DanteAppBar(
+    return SliverDanteScaffold(
+      appBar: SliverDanteAppBar(
         title: Text("Home"),
       ),
       body: [HomeGoalsList()],
