@@ -1,19 +1,20 @@
-import 'package:dante/screens/create/field_container.dart';
 import 'package:flutter/material.dart';
+import 'package:dante/screens/create/field_container.dart';
 
-class TitleField extends StatelessWidget {
-  final bool hasValue;
-  final Function onNext;
-  final FocusNode focusNode;
-  final Function onChange;
-
-  TitleField({this.hasValue, this.onChange, this.onNext, this.focusNode});
+class TitleField extends Field {
+  TitleField({hasValue, onChange, button, focusNode})
+      : super(
+          button: button,
+          hasValue: hasValue,
+          onChange: onChange,
+          focusNode: focusNode,
+        );
 
   @override
   Widget build(BuildContext context) {
     return CreateFieldContainer(
+      button: button,
       hasValue: hasValue,
-      button: RaisedButton(onPressed: onNext),
       title: "Qual a sua meta?",
       child: TextField(
         onChanged: onChange,

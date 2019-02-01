@@ -6,9 +6,12 @@ class CreateFieldContainer extends StatelessWidget {
   final Widget button;
   final bool hasValue;
 
-  const CreateFieldContainer(
-      {this.title, this.child, this.button, this.hasValue})
-      : super();
+  const CreateFieldContainer({
+    this.child,
+    this.title,
+    this.button,
+    this.hasValue,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,4 +53,22 @@ class CreateFieldContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+abstract class Field extends StatelessWidget {
+  final bool hasValue;
+  final Widget button;
+  final Function onTap;
+  final Function onChange;
+  final FocusNode focusNode;
+  final TextEditingController controller;
+
+  Field({
+    this.onTap,
+    this.button,
+    this.hasValue,
+    this.onChange,
+    this.focusNode,
+    this.controller,
+  });
 }

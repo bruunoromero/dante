@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:dante/screens/create/how_to_mesure_field.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
 import 'package:validate/validate.dart';
 import 'package:dante/repositories/goal.dart';
 import 'package:dante/screens/create/title_field.dart';
-import 'package:dante/screens/create/field_container.dart';
+import 'package:dante/screens/create/aspect_field.dart';
+import 'package:dante/screens/create/deadline_field.dart';
+import 'package:dante/screens/create/how_to_mesure_field.dart';
 
 class CreateGoalForm extends StatefulWidget {
   final Goal goal;
@@ -66,11 +67,6 @@ class CreateGoalFormState extends State<CreateGoalForm> {
   }
 
   @override
-  dispose() {
-    super.dispose();
-  }
-
-  @override
   didChangeDependencies() {
     super.didChangeDependencies();
     if (!hasBuildedOnce) {
@@ -79,90 +75,76 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     }
   }
 
-  Function _validatePresence(String message) => (String str) {
-        if (!_hasValue(str)) {
-          return message;
-        }
-      };
-  CreateFieldContainer _buildDeadlineField(BuildContext context) {
-    return CreateFieldContainer(
-      hasValue: true,
-      title: "hey",
-      child: InkWell(
-        onTap: () async {
-          final date = await showDatePicker(
-            context: context,
-            firstDate: DateTime.now(),
-            initialDate: DateTime.now(),
-            lastDate: DateTime(2100, 1, 1),
-          );
-
-          if (date != null) {
-            setState(() {
-              _dateController.text = date.toString();
-              goal.date = date.toString();
-            });
-          }
-        },
-        child: AbsorbPointer(
-          child: TextField(
-            controller: _dateController,
-            decoration: InputDecoration(
-              labelText: "Quando quer atingir sua meta?",
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ),
+  TitleField _buildTitleField() {
+    return TitleField(
+      focusNode: _focusNodes[0],
+      hasValue: _hasValue(goal.title),
+      button: RaisedButton(
+        onPressed: _nextPage,
       ),
+      onChange: (str) {
+        setState(() {
+          goal.title = str;
+        });
+      },
     );
   }
 
-  CreateFieldContainer _buildAspectField(BuildContext context) {
-    return CreateFieldContainer(
-      hasValue: true,
-      button: RaisedButton(onPressed: () {}),
-      title: "hey",
-      child: InkWell(
-        onTap: () async {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        setState(() {
-                          _aspectController.text = "Work";
-                          goal.aspect = "Work";
-                        });
-                      },
-                      leading: Icon(Icons.work),
-                      title: Text("Work"),
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        },
-        child: AbsorbPointer(
-          child: TextFormField(
-            onSaved: (str) {
-              goal.aspect = str;
-            },
-            validator: _validatePresence(
-                "Você deve preencer qual aspector da sua meta"),
-            controller: _aspectController,
-            decoration: InputDecoration(
-              labelText: "Em qual aspecto está a sua meta?",
-              border: OutlineInputBorder(),
-            ),
-          ),
-        ),
+  HowToMesureField _buildHowToMesureField() {
+    return HowToMesureField(
+      focusNode: _focusNodes[1],
+      hasValue: _hasValue(goal.howToMesure),
+      button: RaisedButton(
+        onPressed: _nextPage,
       ),
+      onChange: (str) {
+        setState(() {
+          goal.howToMesure = str;
+        });
+      },
+    );
+  }
+
+  DeadlineField _buildDeadlineField() {
+    return DeadlineField(
+      controller: _dateController,
+      hasValue: _hasValue(goal.date),
+      button: RaisedButton(
+        onPressed: _nextPage,
+      ),
+      onChange: (date) {
+        setState(() {
+          goal.date = date.toString();
+          _dateController.text = goal.date;
+        });
+      },
+      onTap: (context) {
+        return showDatePicker(
+          context: context,
+          firstDate: DateTime.now(),
+          initialDate: DateTime.now(),
+          lastDate: DateTime(2100, 1, 1),
+        );
+      },
+    );
+  }
+
+  AspectField _buildAspectField() {
+    return AspectField(
+      controller: _aspectController,
+      hasValue: _hasValue(goal.aspect),
+      button: RaisedButton(
+        onPressed: () {},
+      ),
+      onChange: (str) {
+        setState(() {
+          goal.aspect = str;
+          _aspectController.text = goal.aspect;
+        });
+      },
+      onTap: (builder) {
+        showModalBottomSheet(context: context, builder: builder);
+      },
     );
   }
 
@@ -197,28 +179,10 @@ class CreateGoalFormState extends State<CreateGoalForm> {
           controller: _pageController,
           scrollDirection: Axis.vertical,
           children: [
-            TitleField(
-              focusNode: _focusNodes[0],
-              hasValue: _hasValue(goal.title),
-              onNext: _nextPage,
-              onChange: (str) {
-                setState(() {
-                  goal.title = str;
-                });
-              },
-            ),
-            HowToMesureField(
-              focusNode: _focusNodes[1],
-              hasValue: _hasValue(goal.howToMesure),
-              onNext: _nextPage,
-              onChange: (str) {
-                setState(() {
-                  goal.howToMesure = str;
-                });
-              },
-            ),
-            _buildDeadlineField(context),
-            _buildAspectField(context),
+            _buildTitleField(),
+            _buildHowToMesureField(),
+            _buildDeadlineField(),
+            _buildAspectField(),
             _buildSubmitButton(context)
           ],
         ),
