@@ -19,9 +19,9 @@ class HowToMesureField extends Field {
       child: TextField(
         onChanged: onChange,
         focusNode: focusNode,
-        decoration: InputDecoration(
-          labelText: "Como saber se a meta foi antigida?",
-          border: OutlineInputBorder(),
+        style: TextStyle(
+          fontSize: 24,
+          color: Colors.black,
         ),
       ),
     );

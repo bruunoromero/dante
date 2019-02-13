@@ -42,9 +42,9 @@ class AspectField extends Field {
         child: AbsorbPointer(
           child: TextField(
             controller: controller,
-            decoration: InputDecoration(
-              labelText: "Em qual aspecto está a sua meta?",
-              border: OutlineInputBorder(),
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.black,
             ),
           ),
         ),

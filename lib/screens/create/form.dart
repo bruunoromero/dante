@@ -27,12 +27,10 @@ class CreateGoalFormState extends State<CreateGoalForm> {
   List<FocusNode> _focusNodes;
   PageController _pageController;
   GoalRepository _goalRepository;
-  GlobalKey<FormState> _formKey;
   TextEditingController _dateController;
   TextEditingController _aspectController;
 
   CreateGoalFormState({this.goal}) : super() {
-    _formKey = GlobalKey<FormState>();
     _goalRepository = GoalRepository();
     _pageController = PageController();
     _dateController = TextEditingController(text: goal.date);
@@ -75,13 +73,41 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     }
   }
 
+  IconButton _buildNextButton() {
+    return IconButton(
+      iconSize: 30,
+      onPressed: _nextPage,
+      icon: Icon(Icons.arrow_downward),
+      color: Theme.of(context).primaryColor,
+    );
+  }
+
+  Row _buildSubmitButton() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: RaisedButton(
+            onPressed: () async {
+              await _goalRepository.create(goal);
+
+              Navigator.pop(context);
+            },
+            color: Theme.of(context).primaryColor,
+            child: Text(
+              "Criar",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   TitleField _buildTitleField() {
     return TitleField(
       focusNode: _focusNodes[0],
       hasValue: _hasValue(goal.title),
-      button: RaisedButton(
-        onPressed: _nextPage,
-      ),
+      button: _buildNextButton(),
       onChange: (str) {
         setState(() {
           goal.title = str;
@@ -94,9 +120,7 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     return HowToMesureField(
       focusNode: _focusNodes[1],
       hasValue: _hasValue(goal.howToMesure),
-      button: RaisedButton(
-        onPressed: _nextPage,
-      ),
+      button: _buildNextButton(),
       onChange: (str) {
         setState(() {
           goal.howToMesure = str;
@@ -109,9 +133,7 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     return DeadlineField(
       controller: _dateController,
       hasValue: _hasValue(goal.date),
-      button: RaisedButton(
-        onPressed: _nextPage,
-      ),
+      button: _buildNextButton(),
       onChange: (date) {
         setState(() {
           goal.date = date.toString();
@@ -133,9 +155,7 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     return AspectField(
       controller: _aspectController,
       hasValue: _hasValue(goal.aspect),
-      button: RaisedButton(
-        onPressed: () {},
-      ),
+      button: _buildSubmitButton(),
       onChange: (str) {
         setState(() {
           goal.aspect = str;
@@ -148,44 +168,20 @@ class CreateGoalFormState extends State<CreateGoalForm> {
     );
   }
 
-  Row _buildSubmitButton(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: RaisedButton(
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                await _goalRepository.create(goal);
-
-                Navigator.pop(context);
-              }
-            },
-            child: Text("Criar"),
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Form(
-        key: _formKey,
-        child: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          scrollDirection: Axis.vertical,
-          children: [
-            _buildTitleField(),
-            _buildHowToMesureField(),
-            _buildDeadlineField(),
-            _buildAspectField(),
-            _buildSubmitButton(context)
-          ],
-        ),
+      child: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        scrollDirection: Axis.vertical,
+        children: [
+          _buildTitleField(),
+          _buildHowToMesureField(),
+          _buildDeadlineField(),
+          _buildAspectField(),
+        ],
       ),
     );
   }

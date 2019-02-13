@@ -18,16 +18,14 @@ class GoalForm extends StatefulWidget {
 
 class GoalFormState extends State<GoalForm> {
   Goal goal;
+  GlobalKey<FormState> _formKey;
   PageController _pageController;
   GoalRepository _goalRepository;
-  GlobalKey<FormState> _formKey;
-  TextEditingController _goalController;
 
   GoalFormState({this.goal}) : super() {
     _formKey = GlobalKey<FormState>();
     _goalRepository = GoalRepository();
     _pageController = PageController();
-    _goalController = TextEditingController(text: "");
     _pageController.addListener(_dismissKeyboard);
   }
 

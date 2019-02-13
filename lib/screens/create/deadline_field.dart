@@ -28,9 +28,9 @@ class DeadlineField extends Field {
         child: AbsorbPointer(
           child: TextField(
             controller: controller,
-            decoration: InputDecoration(
-              labelText: "Quando quer atingir sua meta?",
-              border: OutlineInputBorder(),
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.black,
             ),
           ),
         ),
