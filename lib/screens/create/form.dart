@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
 import 'package:validate/validate.dart';
@@ -23,6 +24,7 @@ class CreateGoalForm extends StatefulWidget {
 
 class CreateGoalFormState extends State<CreateGoalForm> {
   Goal goal;
+  DateFormat _formatter;
   bool hasBuildedOnce = false;
   List<FocusNode> _focusNodes;
   PageController _pageController;
@@ -33,6 +35,7 @@ class CreateGoalFormState extends State<CreateGoalForm> {
   CreateGoalFormState({this.goal}) : super() {
     _goalRepository = GoalRepository();
     _pageController = PageController();
+    _formatter = new DateFormat('dd/MM/yyyy');
     _dateController = TextEditingController(text: goal.date);
     _aspectController = TextEditingController(text: goal.aspect);
     _focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
@@ -134,10 +137,12 @@ class CreateGoalFormState extends State<CreateGoalForm> {
       controller: _dateController,
       hasValue: _hasValue(goal.date),
       button: _buildNextButton(),
-      onChange: (date) {
+      onChange: (DateTime date) {
         setState(() {
-          goal.date = date.toString();
-          _dateController.text = goal.date;
+          final formattedDate = _formatter.format(date);
+
+          _dateController.text = formattedDate;
+          goal.date = date.microsecondsSinceEpoch.toString();
         });
       },
       onTap: (context) {
@@ -161,9 +166,6 @@ class CreateGoalFormState extends State<CreateGoalForm> {
           goal.aspect = str;
           _aspectController.text = goal.aspect;
         });
-      },
-      onTap: (builder) {
-        showModalBottomSheet(context: context, builder: builder);
       },
     );
   }

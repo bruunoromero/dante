@@ -8,9 +8,9 @@ part 'goal.g.dart';
 class Goal extends BaseModel {
   @PrimaryKey()
   String id;
-  String date;
   String title;
   String aspect;
+  String date;
   String howToMesure;
 
   Goal({

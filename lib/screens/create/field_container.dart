@@ -34,9 +34,15 @@ class CreateFieldContainer extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    child: child,
-                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: child,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

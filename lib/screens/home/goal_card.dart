@@ -1,46 +1,46 @@
 import 'package:dante/routes.dart';
+import 'package:dante/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dante/models/goal.dart';
 import 'package:dante/widgets/card.dart';
-import 'package:dante/screens/edit.dart';
 
 class HomeGoalCard extends StatelessWidget {
   final Goal goal;
 
   const HomeGoalCard({@required this.goal}) : super();
 
-  Widget buildCard() {
+  Widget buildCard(context) {
     return ListTile(
-      leading: buildLeading(),
+      leading: buildLeading(context),
       title: buildTitle(),
-      subtitle: buildSubtitle(),
+      subtitle: buildSubtitle(context),
       trailing: Icon(
         Icons.keyboard_arrow_right,
         size: 30.0,
-        color: Colors.red,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  Container buildLeading() {
+  Container buildLeading(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(right: 12.0),
       decoration: new BoxDecoration(
         border: new Border(
           right: new BorderSide(
             width: 1.0,
-            color: Colors.red,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ),
       child: Icon(
-        Icons.autorenew,
-        color: Colors.red,
+        textToIcon(goal.aspect),
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  Row buildSubtitle() {
+  Row buildSubtitle(BuildContext context) {
     return Row(
       children: <Widget>[
         Icon(
@@ -49,7 +49,7 @@ class HomeGoalCard extends StatelessWidget {
         ),
         Text(
           " Intermediate",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Theme.of(context).primaryColor),
         )
       ],
     );
@@ -65,7 +65,7 @@ class HomeGoalCard extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.all(8),
-        child: buildCard(),
+        child: buildCard(context),
       ),
     );
   }
