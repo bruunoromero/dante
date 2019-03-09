@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
+import 'package:dante/goals/models/goal.dart';
 import 'package:validate/validate.dart';
-import 'package:dante/repositories/goal.dart';
-import 'package:dante/screens/form/field_container.dart';
+import 'package:dante/goals/screens/form/field_container.dart';
 
 class GoalForm extends StatefulWidget {
   final Goal goal;
@@ -20,11 +19,9 @@ class GoalFormState extends State<GoalForm> {
   Goal goal;
   GlobalKey<FormState> _formKey;
   PageController _pageController;
-  GoalRepository _goalRepository;
 
   GoalFormState({this.goal}) : super() {
     _formKey = GlobalKey<FormState>();
-    _goalRepository = GoalRepository();
     _pageController = PageController();
     _pageController.addListener(_dismissKeyboard);
   }
@@ -90,7 +87,7 @@ class GoalFormState extends State<GoalForm> {
 
   FormFieldContainer _buildDeadlineField(BuildContext context) {
     return FormFieldContainer(
-      hasValue: _hasValue(goal.date),
+      // hasValue: _hasValue(goal.date),
       title: "hey",
       child: InkWell(
         onTap: () async {
@@ -103,7 +100,7 @@ class GoalFormState extends State<GoalForm> {
 
           if (date != null) {
             setState(() {
-              goal.date = date.toString();
+              // goal.date = date.toString();
             });
           }
         },
@@ -169,7 +166,7 @@ class GoalFormState extends State<GoalForm> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                await _goalRepository.create(goal);
+                // await _goalRepository.create(goal);
 
                 Navigator.pop(context);
               }

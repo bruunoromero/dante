@@ -1,8 +1,8 @@
+import 'package:dante/goals/screens/create/field_container.dart';
 import 'package:flutter/material.dart';
-import 'package:dante/screens/create/field_container.dart';
 
-class TitleField extends Field {
-  TitleField({hasValue, onChange, button, focusNode})
+class HowToMesureField extends Field {
+  HowToMesureField({hasValue, onChange, button, focusNode})
       : super(
           button: button,
           hasValue: hasValue,
@@ -13,9 +13,9 @@ class TitleField extends Field {
   @override
   Widget build(BuildContext context) {
     return CreateFieldContainer(
+      title: "hey",
       button: button,
       hasValue: hasValue,
-      title: "Qual o seu objetivo?",
       child: TextField(
         onChanged: onChange,
         focusNode: focusNode,

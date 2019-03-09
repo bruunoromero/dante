@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
-import 'package:dante/screens/create/form.dart';
+import 'package:dante/goals/models/goal.dart';
+import 'package:dante/goals/screens/create/form.dart';
 
 class EditScreen extends StatelessWidget {
   final Goal goal;

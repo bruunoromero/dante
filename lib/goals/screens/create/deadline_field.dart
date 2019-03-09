@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dante/screens/create/field_container.dart';
+import 'package:dante/goals/screens/create/field_container.dart';
 
 class DeadlineField extends Field {
   DeadlineField({hasValue, onChange, onTap, button, focusNode, controller})

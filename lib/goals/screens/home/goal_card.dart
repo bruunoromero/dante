@@ -1,7 +1,7 @@
 import 'package:dante/routes.dart';
 import 'package:dante/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
+import 'package:dante/goals/models/goal.dart';
 import 'package:dante/widgets/card.dart';
 
 class HomeGoalCard extends StatelessWidget {

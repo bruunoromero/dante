@@ -15,7 +15,6 @@ class SliverDanteScaffold extends StatelessWidget {
       body: CustomScrollView(
         slivers: slivers,
       ),
-      floatingActionButton: floatingActionButton,
     );
   }
 }

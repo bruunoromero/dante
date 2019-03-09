@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
+import 'package:dante/goals/models/goal.dart';
 import 'package:validate/validate.dart';
-import 'package:dante/repositories/goal.dart';
-import 'package:dante/screens/create/title_field.dart';
-import 'package:dante/screens/create/aspect_field.dart';
-import 'package:dante/screens/create/deadline_field.dart';
-import 'package:dante/screens/create/how_to_mesure_field.dart';
+import 'package:dante/goals/screens/create/title_field.dart';
+import 'package:dante/goals/screens/create/aspect_field.dart';
+import 'package:dante/goals/screens/create/deadline_field.dart';
+import 'package:dante/goals/screens/create/how_to_mesure_field.dart';
 
 class CreateGoalForm extends StatefulWidget {
   final Goal goal;
@@ -28,15 +27,13 @@ class CreateGoalFormState extends State<CreateGoalForm> {
   bool hasBuildedOnce = false;
   List<FocusNode> _focusNodes;
   PageController _pageController;
-  GoalRepository _goalRepository;
   TextEditingController _dateController;
   TextEditingController _aspectController;
 
   CreateGoalFormState({this.goal}) : super() {
-    _goalRepository = GoalRepository();
     _pageController = PageController();
     _formatter = new DateFormat('dd/MM/yyyy');
-    _dateController = TextEditingController(text: goal.date);
+    _dateController = TextEditingController(text: _formatter.format(goal.dueDate));
     _aspectController = TextEditingController(text: goal.aspect);
     _focusNodes = [FocusNode(), FocusNode(), FocusNode(), FocusNode()];
   }
@@ -91,7 +88,7 @@ class CreateGoalFormState extends State<CreateGoalForm> {
         Expanded(
           child: RaisedButton(
             onPressed: () async {
-              await _goalRepository.create(goal);
+              // await _goalRepository.create(goal);
 
               Navigator.pop(context);
             },
@@ -135,14 +132,14 @@ class CreateGoalFormState extends State<CreateGoalForm> {
   DeadlineField _buildDeadlineField() {
     return DeadlineField(
       controller: _dateController,
-      hasValue: _hasValue(goal.date),
+      // hasValue: _hasValue(goal.date),
       button: _buildNextButton(),
       onChange: (DateTime date) {
         setState(() {
           final formattedDate = _formatter.format(date);
 
           _dateController.text = formattedDate;
-          goal.date = date.microsecondsSinceEpoch.toString();
+          // goal.date = date.microsecondsSinceEpoch.toString();
         });
       },
       onTap: (context) {

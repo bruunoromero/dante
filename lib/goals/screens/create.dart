@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dante/widgets/app_bar.dart';
-import 'package:dante/screens/create/form.dart';
+import 'package:dante/goals/screens/create/form.dart';
 
 class CreateScreen extends StatelessWidget {
   @override

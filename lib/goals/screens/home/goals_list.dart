@@ -1,11 +1,9 @@
+import 'package:dante/goals/api/goals_api.dart';
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
-import 'package:dante/repositories/goal.dart';
-import 'package:dante/screens/home/goal_card.dart';
+import 'package:dante/goals/models/goal.dart';
+import 'package:dante/goals/screens/home/goal_card.dart';
 
 class HomeGoalsList extends StatelessWidget {
-  final _goalsRepository = GoalRepository();
-
   HomeGoalsList({
     Key key,
   }) : super(key: key);
@@ -32,8 +30,8 @@ class HomeGoalsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: _goalsRepository.snapshots(),
+    return FutureBuilder(
+      future: GoalsApi.getGoals(),
       builder: _buildList,
     );
   }

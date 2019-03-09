@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:dante/models/goal.dart';
-import 'package:dante/screens/edit.dart';
-import 'package:dante/screens/create.dart';
+import 'package:dante/goals/models/goal.dart';
+import 'package:dante/goals/screens/edit.dart';
+import 'package:dante/goals/screens/create.dart';
 
 MaterialPageRoute createScreenRoute() {
   return MaterialPageRoute(
