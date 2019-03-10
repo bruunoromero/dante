@@ -12,6 +12,7 @@
 .history
 .svn/
 node_modules/
+serviceAccountKey.json
 
 # IntelliJ related
 *.iml
